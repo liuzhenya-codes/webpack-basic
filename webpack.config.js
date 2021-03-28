@@ -1,6 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const { HotModuleReplacementPlugin } = require('webpack')
 
 module.exports = {
   mode: 'development',
@@ -19,7 +20,9 @@ module.exports = {
   devServer: {
     // open: true, // 编译完成后是否自动打开浏览器
     contentBase: './output',
-    port: 9000
+    port: 9000,
+    hot: true,
+    hotOnly: true
   },
   // devtool 官方文档：https://webpack.docschina.org/configuration/devtool/
   // source-map 是一个映射关系，当代码运行报错时，他可以映射到实际的开发代码位置，方便调试
@@ -38,7 +41,9 @@ module.exports = {
     }),
     // CleanWebpackPlugin 会在打包之前调用，先删除指定打包目录下的所有内容，防止老旧打包文件对接下来的打包操作进行干扰
     // https://www.npmjs.com/package/clean-webpack-plugin
-    new CleanWebpackPlugin({})
+    new CleanWebpackPlugin({}),
+    // 热更新插件
+    new HotModuleReplacementPlugin()
   ],
   module: {
     rules: [
@@ -82,6 +87,32 @@ module.exports = {
           { // 注意是 sass-loader 来编译 scss，字母不一样，实际上 scss 是 sass 的最新版本，scss 本质上还是 sass
             // sass-loader 安装时需要安装两个包：sass-loader 和 node-sass，否则会有引用缺失报错
             loader: 'sass-loader'
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                plugins: [
+                  [
+                    "postcss-preset-env",
+                    {
+                      // 其他选项
+                    },
+                  ],
+                ],
+              },
+            },
+          },
+        ]
+      },
+      {
+        test: /\.css$/i,
+        use: [
+          {
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader'
           },
           {
             loader: "postcss-loader",

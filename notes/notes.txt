@@ -7,6 +7,15 @@ webpack的plugin可以在webpack运行到某个时刻的时候。帮你做一些
 htmlWebpackplugin 会在打包结束后自动生成一个html文件，并把打包生成的js文件自动引入到这个HTML中
 cleanWebpackPlugin 会在打包之前调用，先删除指定打包目录下的所有内容，防止老旧打包文件对接下来的打包操作进行干扰
 
+
+development（开发环境）官方文档：https://webpack.docschina.org/guides/development/
+devServer 官方文档：https://webpack.docschina.org/configuration/dev-server/
 webpack --watch 检测到引用模块发生变化时会自动运行一次build，仅仅是build了一次，不会刷新浏览器，不会开前端服务
 webpack-dev-serve 检测到引用模块发生变化时会实时编译，自动刷新浏览器，并启动一个本地服务，便于发送跨域请求
 node server.js 手动实现 webpack --watch
+
+热更新 Hot Module Replacement （HMR），是项目中一般都需要配置的项，它可以实现局部热更新，而不需要刷新页面，方便开发
+静态样式因为 使用了css-loader，所以样式部分会自动的替换，但是其他文件例如HTML和js则需要通过module.hot.accpect手动替换
+概念：https://webpack.docschina.org/concepts/hot-module-replacement/
+指南：https://webpack.docschina.org/guides/hot-module-replacement/
+API：https://webpack.docschina.org/api/hot-module-replacement/
