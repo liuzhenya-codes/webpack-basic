@@ -1,10 +1,8 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const { HotModuleReplacementPlugin } = require('webpack')
 
 module.exports = {
-  mode: 'development',
   entry: { // 入口文件
     main: './src/js/index.js' // 入口主文件
     // second:  './src/js/index.js' // 入口文件可以有多个，配置多个入口文件时，出口文件名需要使用占位符[name]防止文件重名导致打包失败
@@ -14,25 +12,8 @@ module.exports = {
     // publicPath: './', 在 npm run build 下使用，不配置也可以，为避免不必要的出错，建议不配置
     // publicPath: '/', 在 npm run dev 下使用，不配置也可以，为避免不必要的出错，建议不配置
     filename: '[name].js', // 打包出的主文件名称
-    path: path.resolve(__dirname, 'output')  // 打包出的文件放在当前目录下的output文件夹下
+    path: path.resolve(__dirname, '../output')  // 打包出的文件放在当前目录下的output文件夹下
   },
-  // devServer（webpack-dev-server）官方文档：https://webpack.docschina.org/configuration/dev-server/
-  devServer: {
-    // open: true, // 编译完成后是否自动打开浏览器
-    contentBase: './output',
-    port: 9000,
-    hot: true,
-    hotOnly: true
-  },
-  // devtool 官方文档：https://webpack.docschina.org/configuration/devtool/
-  // source-map 是一个映射关系，当代码运行报错时，他可以映射到实际的开发代码位置，方便调试
-  // 综合推荐： development 环境使用 eval-cheap-module-source-map ；production 环境使用 cheap-module-source-map
-  // source-map 原理是面试热点，请仔细阅读以下文档
-  // https://segmentfault.com/a/1190000008315937
-  // https://www.html5rocks.com/en/tutorials/developertools/sourcemaps/
-  // http://www.ruanyifeng.com/blog/2013/01/javascript_source_map.html
-  // https://www.youtube.com/watch?v=NkVes0UMe9Y
-  devtool: 'eval-cheap-module-source-map', // 通过eval形式将sourcemap规则放到output的js内-只带列不带行-对loader里代码也生成一个sourcemap-生成sourcemap.map文件制定output文件和源文件的映射关系
   plugins: [
     // HtmlWebpackPlugin 会在打包结束后自动生成一个html文件，并把打包生成的js文件自动引入到这个HTML中
     // https://webpack.docschina.org/plugins/html-webpack-plugin/
@@ -41,9 +22,7 @@ module.exports = {
     }),
     // CleanWebpackPlugin 会在打包之前调用，先删除指定打包目录下的所有内容，防止老旧打包文件对接下来的打包操作进行干扰
     // https://www.npmjs.com/package/clean-webpack-plugin
-    new CleanWebpackPlugin({}),
-    // 热更新插件
-    new HotModuleReplacementPlugin()
+    new CleanWebpackPlugin({})
   ],
   module: {
     rules: [
@@ -158,11 +137,4 @@ module.exports = {
       }
     ]
   },
-  // tree-shaking 可以实现【将不需要的引用的代码剔除】的功能
-  // 配置 optimization: { userExports: true } 即可
-  // 如存在不指定import的部分，则需要配合package.json里 "sideEffects": ["*.*"] 进行配置忽略，如果没有需求，则配置为false
-  // 注意：production环境下回默认配置 optimization: { userExports: true }，development环境下即使配置了optimization: { userExports: true }打包出来的代码也不会删除任何部分以保证调试准确，但是会给予一定的提示告诉你代码弃用情况
-  optimization: {
-    usedExports: true
-  }
 }
