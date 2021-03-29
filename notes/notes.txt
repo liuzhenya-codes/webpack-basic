@@ -23,6 +23,9 @@ node server.js 手动实现 webpack --watch
 API：https://webpack.docschina.org/api/hot-module-replacement/
 
 babel 可以转化es6为es5
+babel-loader 负责打通跟webpack的关联，并没有转换
+babel-preset-env 负责转换新的JavaScript句法（syntax）而不转换新的API
+babel-polyfill  为当前环境提供一个垫片，转换新的API，设置useBuiltIns为'usage'如图可以按需加载，这样可以避免转换后文件过大
 1.安装babel：https://www.babeljs.cn/setup#installation；bable使用指南：https://www.babeljs.cn/docs/usage
   a.安装babel-loader 和 @babel/core 打通和webpack的通信 => npm install --save-dev babel-loader @babel/core
   b.安装es6基础语法解析器：npm install @babel/preset-env --save-dev
@@ -34,3 +37,9 @@ babel 可以转化es6为es5
 3.babel-polyfill使用时会污染全局变量，若想阻止这一问题 ，需要使用 @bable/plugin-transform-runtime：https://www.babeljs.cn/docs/babel-plugin-transform-runtime
   npm install --save-dev @babel/plugin-transform-runtime
 提示:bable的配置可以直接使用 .babelrc 文件注入，以减少webpack.config.js中的配置代码量
+
+
+tree-shaking 可以实现【将不需要的引用的代码剔除】的功能
+配置 optimization: { userExports: true } 即可
+如存在不指定import的部分，则需要配合package.json里 "sideEffects": ["*.*"] 进行配置忽略，如果没有需求，则配置为false
+注意：production环境下回默认配置 optimization: { userExports: true }，development环境下即使配置了optimization: { userExports: true }打包出来的代码也不会删除任何部分以保证调试准确，但是会给予一定的提示告诉你代码弃用情况

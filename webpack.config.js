@@ -157,5 +157,12 @@ module.exports = {
         }
       }
     ]
+  },
+  // tree-shaking 可以实现【将不需要的引用的代码剔除】的功能
+  // 配置 optimization: { userExports: true } 即可
+  // 如存在不指定import的部分，则需要配合package.json里 "sideEffects": ["*.*"] 进行配置忽略，如果没有需求，则配置为false
+  // 注意：production环境下回默认配置 optimization: { userExports: true }，development环境下即使配置了optimization: { userExports: true }打包出来的代码也不会删除任何部分以保证调试准确，但是会给予一定的提示告诉你代码弃用情况
+  optimization: {
+    usedExports: true
   }
 }

@@ -1,10 +1,3 @@
-// import '@babel/polyfill'
+import { func1 } from './tree-shaking'
 
-const a = [
-  new Promise(() => {}),
-  new Promise(() => {})
-]
-
-a.map(item => {
-  console.log(item)
-})
+func1(123)

@@ -23,3 +23,14 @@
 // module.hot && module.hot.accept('./hotNumber', () => {
 //   console.log('hotNumber.js 发生了变化，因此触发了此回调函数，可以在这里做一些更新操作')
 // })
+
+// import '@babel/polyfill'
+
+// const a = [
+//   new Promise(() => {}),
+//   new Promise(() => {})
+// ]
+
+// a.map(item => {
+//   console.log(item)
+// })
