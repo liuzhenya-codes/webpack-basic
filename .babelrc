@@ -1,0 +1,18 @@
+{
+  // presets: [ // 这种形式打包胡报错，暂时没有找到解决方案
+  //   // 使用 @babel/preset-env 把es6基础语法解析为es5
+  //   ['@babel/preset-env', {
+  //     corejs: 3, // <---  此处加个这个，就没有报错警告了
+  //     useBuiltIns: 'usage' // 当使用了babel-polyfill后，需要按需注入es6新API到es5，否则会导致打包文件有过多无用代码
+  //   }],
+  //   "@babel/preset-react" // 配合使用 @babel/preset-react 可以编译react代码，注意有先后顺序（和loader执行顺序一样，是倒序）@babel/preset-react 将 react 转为 es6 ===> @babel/preset-env 将 es6 转为 es5
+  // ]
+  "plugins": [
+    ["@babel/plugin-transform-runtime", {
+      "corejs": false, // 按理讲，这里需要设为2，否则【将es6中的新API注入到es5环境中】这个功能就会不生效，但是设为2之后就会报错，暂时没有找到解决方案
+      "helpers": true,
+      "regenerator": true,
+      "userESModules": false
+    }]
+  ]
+}

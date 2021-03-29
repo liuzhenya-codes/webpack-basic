@@ -1,6 +1,8 @@
 npm install --save 会自动把模块和版本号添加到package.json的dependencies部分，新版默认就加了save，所以没什么不同
 https://blog.csdn.net/weixin_41766191/article/details/92094837
 
+loader 是帮助webpack做打包的工具
+
 字体文件统一使用file-loader进行打包
 
 webpack的plugin可以在webpack运行到某个时刻的时候。帮你做一些事情
@@ -19,3 +21,16 @@ node server.js 手动实现 webpack --watch
 概念：https://webpack.docschina.org/concepts/hot-module-replacement/
 指南：https://webpack.docschina.org/guides/hot-module-replacement/
 API：https://webpack.docschina.org/api/hot-module-replacement/
+
+babel 可以转化es6为es5
+1.安装babel：https://www.babeljs.cn/setup#installation；bable使用指南：https://www.babeljs.cn/docs/usage
+  a.安装babel-loader 和 @babel/core 打通和webpack的通信 => npm install --save-dev babel-loader @babel/core
+  b.安装es6基础语法解析器：npm install @babel/preset-env --save-dev
+    这里只会解析一些基础语法例如声明语法const let，箭头函数等，es6的新API无法解析
+2.安装babel-polyfill：https://www.babeljs.cn/docs/babel-polyfill
+  npm install --save @babel/polyfill
+  babel-polyfill会将es6中的新API注入到es5环境中，由于es6新语法很多，所以这会注入非常多的代码进es5，为避免无用代码被注入，可选择按需引入
+  配合使用 @babel/preset-react 可以编译react代码，注意有先后顺序 @babel/preset-react 将 react 转为 es6 => @babel/preset-env 将 es6 转为 es5
+3.babel-polyfill使用时会污染全局变量，若想阻止这一问题 ，需要使用 @bable/plugin-transform-runtime：https://www.babeljs.cn/docs/babel-plugin-transform-runtime
+  npm install --save-dev @babel/plugin-transform-runtime
+提示:bable的配置可以直接使用 .babelrc 文件注入，以减少webpack.config.js中的配置代码量

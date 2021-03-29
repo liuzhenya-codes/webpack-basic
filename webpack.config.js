@@ -16,7 +16,7 @@ module.exports = {
     filename: '[name].js', // 打包出的主文件名称
     path: path.resolve(__dirname, 'output')  // 打包出的文件放在当前目录下的output文件夹下
   },
-  // devServer 官方文档：https://webpack.docschina.org/configuration/dev-server/
+  // devServer（webpack-dev-server）官方文档：https://webpack.docschina.org/configuration/dev-server/
   devServer: {
     // open: true, // 编译完成后是否自动打开浏览器
     contentBase: './output',
@@ -32,7 +32,7 @@ module.exports = {
   // https://www.html5rocks.com/en/tutorials/developertools/sourcemaps/
   // http://www.ruanyifeng.com/blog/2013/01/javascript_source_map.html
   // https://www.youtube.com/watch?v=NkVes0UMe9Y
-  devtool: 'eval-cheap-module-source-map',
+  devtool: 'eval-cheap-module-source-map', // 通过eval形式将sourcemap规则放到output的js内-只带列不带行-对loader里代码也生成一个sourcemap-生成sourcemap.map文件制定output文件和源文件的映射关系
   plugins: [
     // HtmlWebpackPlugin 会在打包结束后自动生成一个html文件，并把打包生成的js文件自动引入到这个HTML中
     // https://webpack.docschina.org/plugins/html-webpack-plugin/
@@ -57,7 +57,7 @@ module.exports = {
         //     outputPath: 'images/'
         //   }
         // },
-        // url-loader，区别于file-loader，url-loader可以定义limit，标识文件的大小，小于此值，解析base64，大于此值，打包为图片，合理分配打包资源以达到最佳的加载速度
+        // url-loader，区别于file-loader，url-loader可以定义limit，标识文件的大小，小于此值，解析为base64以减少图片http请求，大于此值，和file-loader一样打包为图片，合理分配打包资源以达到最佳的加载速度
         use: {
           loader: 'url-loader',
           options: {
@@ -130,6 +130,31 @@ module.exports = {
             },
           },
         ]
+      },
+      {
+        test: /\.js$/,
+        exclude: '/node_modules',
+        use: {
+          loader: 'babel-loader', // user bable loader 打通 bable loader 和 webpack 之间的联系
+          // // 使用 .babelRc 文件管理 options，此处 options内容全部放到 .babelRc 内
+          // options: {
+          //   // presets: [
+          //   //   // 使用 @babel/preset-env 把es6基础语法解析为es5
+          //   //   ['@babel/preset-env', {
+          //   //     corejs: 3, // <---  此处加个这个，就没有报错警告了
+          //   //     useBuiltIns: 'usage' // 当使用了babel-polyfill后，需要按需注入es6新API到es5，否则会导致打包文件有过多无用代码
+          //   //   }]
+          //   // ]
+          //   plugins: [
+          //     ['@babel/plugin-transform-runtime', {
+          //       corejs: false,
+          //       helpers: true,
+          //       regenerator: true,
+          //       userESModules: false
+          //     }]
+          //   ]
+          // }
+        }
       }
     ]
   }
