@@ -43,3 +43,13 @@ tree-shaking 可以实现【将不需要的引用的代码剔除】的功能
 配置 optimization: { userExports: true } 即可
 如存在不指定import的部分，则需要配合package.json里 "sideEffects": ["*.*"] 进行配置忽略，如果没有需求，则配置为false
 注意：production环境下回默认配置 optimization: { userExports: true }，development环境下即使配置了optimization: { userExports: true }打包出来的代码也不会删除任何部分以保证调试准确，但是会给予一定的提示告诉你代码弃用情况
+
+
+异步导入
+import('react').then(({ default: react }) => {})
+
+code-spiliting
+// 代码分割，和webpack无关
+// webpack中实现代码分割，两种方式
+// 1. 同步代码： 只需要在webpack.common.js中做optimization.spiltChunks.chunks = 'all' 的配置即可
+// 2. 异步代码(import): 异步代码，无需做任何配置，会自动进行代码分割，放置到新的文件中
